@@ -31,7 +31,6 @@
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
   }
 
   #yes {
@@ -42,6 +41,7 @@
   #no {
     background: #999;
     color: white;
+    position: absolute;
   }
 </style>
 </head>
@@ -49,50 +49,49 @@
 <body>
 
 <div class="box">
-  <h1 id="text">Do you love me 🙂</h1>
+  <h1 id="text">Do you love me Jeetika 🙂</h1>
   <button id="yes" onclick="yesClick()">Yes</button>
-  <button id="no" onclick="noClick()">No</button>
+  <button id="no">No</button>
 </div>
 
 <script>
   let noCount = 0;
   let yesSize = 18;
-  let noSize = 18;
 
   const messages = [
-    "Soch lo 😏",
+    "Soch lo Jeetika 😏",
     "Ek aur baar soch lo 🙄",
     "Sach me No? 😢",
     "Dil toot raha hai 💔",
-    "Last chance 😐",
-    "Bas ho gaya 😌"
+    "Ab bhi No? 😐",
+    "Man jao na 🥺",
+    "Ye No pakka nahi hai 😄"
   ];
 
-  function noClick() {
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+
+  // No click disable
+  noBtn.addEventListener("click", e => e.preventDefault());
+
+  // Hover / touch पर भागे (unlimited)
+  noBtn.addEventListener("mouseover", moveNo);
+  noBtn.addEventListener("touchstart", moveNo);
+
+  function moveNo() {
     noCount++;
 
-    if (noCount <= 6) {
-      document.getElementById("text").innerText = messages[noCount - 1];
-    }
+    // Message loop
+    document.getElementById("text").innerText =
+      messages[noCount % messages.length];
 
-    // Yes बड़ा, No छोटा
-    yesSize += 6;
-    if (noSize > 10) noSize -= 2;
+    // Yes button grows
+    yesSize += 4;
+    yesBtn.style.fontSize = yesSize + "px";
 
-    document.getElementById("yes").style.fontSize = yesSize + "px";
-    document.getElementById("no").style.fontSize = noSize + "px";
-
-    // No बटन भागे
-    const noBtn = document.getElementById("no");
-    noBtn.style.position = "absolute";
-    noBtn.style.left = Math.random() * 70 + "%";
-    noBtn.style.top = Math.random() * 70 + "%";
-
-    // 6 बार No के बाद auto Yes
-    if (noCount === 6) {
-      noBtn.disabled = true;
-      setTimeout(yesClick, 800);
-    }
+    // Random position for No
+    noBtn.style.left = Math.random() * 75 + "%";
+    noBtn.style.top = Math.random() * 75 + "%";
   }
 
   function yesClick() {
